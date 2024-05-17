@@ -13,11 +13,7 @@ const BookCard = ({
 }: Props) => {
   return (
     <div className="card" style={{ width: "16rem" }}>
-      <img
-        src="public/TestBook.jpg"
-        className="card-img-top"
-        alt="Book Cover"
-      />
+      <img src="/TestBook.jpg" className="card-img-top" alt="Book Cover" />
       <div className="card-body">
         <h5 className="card-title">{title}</h5>
         <p className="card-text">
