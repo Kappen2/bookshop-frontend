@@ -1,13 +1,21 @@
-import BookGrid from "./components/BookGrid";
-import NavBar from "./components/NavBar";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import BookPage from "./pages/BookPage";
+import UserPage from "./pages/UserPage";
+import ShoppingCartPage from "./pages/ShoppingCartPage";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div>
-      <NavBar></NavBar>
-      <BookGrid></BookGrid>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/book" element={<BookPage />} />
+        <Route path="/user" element={<UserPage />} />
+        <Route path="/shoppingcart" element={<ShoppingCartPage />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
