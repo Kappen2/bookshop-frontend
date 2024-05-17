@@ -1,9 +1,11 @@
-import Button from "./components/Button";
+import BookGrid from "./components/BookGrid";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
     <div>
-      <Button onClick={() => console.log("Clicked")}>Add To Cart</Button>
+      <NavBar></NavBar>
+      <BookGrid></BookGrid>
     </div>
   );
 }
