@@ -1,8 +1,7 @@
-// src/components/DataTable.tsx
 import React from "react";
 
 interface DataTableProps {
-  data: { [key: string]: any };
+  data: { title: string; author: string; price: number }[];
 }
 
 const DataTable: React.FC<DataTableProps> = ({ data }) => {
@@ -10,15 +9,17 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
     <table className="table">
       <thead>
         <tr>
-          <th>Field</th>
-          <th>Value</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Price</th>
         </tr>
       </thead>
       <tbody>
-        {Object.keys(data).map((key) => (
-          <tr key={key}>
-            <td>{key}</td>
-            <td>{data[key]}</td>
+        {data.map((item, index) => (
+          <tr key={index}>
+            <td>{item.title}</td>
+            <td>{item.author}</td>
+            <td>${item.price !== undefined ? item.price.toFixed(2) : ""}</td>
           </tr>
         ))}
       </tbody>

@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import LoginForm from "../components/LoginForm";
+import DataTable from "../components/DataTable";
+import { useUser } from "./UserContext";
 import axios from "axios";
 
 interface ShoppingCart {
   price: number;
-  items: any[]; // Replace with actual type if known
-  // Add any other fields that ShoppingCart contains
+  bookOrders: { title: string; author: string; price: number }[];
 }
 
 const ShoppingCartPage: React.FC = () => {
+  const { user } = useUser();
   const [shoppingCart, setShoppingCart] = useState<ShoppingCart | null>(null);
 
   const handleLoginSuccess = async (userId: number) => {
@@ -17,6 +19,7 @@ const ShoppingCartPage: React.FC = () => {
       const response = await axios.get(
         `http://localhost:8080/shopping-carts/user/${userId}`
       );
+      console.log("Response data:", response.data);
       if (response.status === 200) {
         setShoppingCart(response.data);
       } else {
@@ -27,6 +30,12 @@ const ShoppingCartPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (user) {
+      handleLoginSuccess(user.id);
+    }
+  }, [user]);
+
   return (
     <div>
       <NavBar />
@@ -34,14 +43,7 @@ const ShoppingCartPage: React.FC = () => {
         <div>
           <h2>Your Shopping Cart</h2>
           <p>Price: {shoppingCart.price}</p>
-          <ul>
-            {shoppingCart.items.map((item, index) => (
-              <li key={index}>
-                {item.name}: {item.quantity} @ {item.price}
-              </li>
-            ))}
-          </ul>
-          {/* Render other shopping cart details here */}
+          <DataTable data={shoppingCart.bookOrders} />
         </div>
       ) : (
         <LoginForm onSuccess={handleLoginSuccess} />
