@@ -2,26 +2,23 @@
 import React from "react";
 
 interface DataTableProps {
-  columns: string[];
-  data: any[];
+  data: { [key: string]: any };
 }
 
-const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
+const DataTable: React.FC<DataTableProps> = ({ data }) => {
   return (
     <table className="table">
       <thead>
         <tr>
-          {columns.map((col) => (
-            <th key={col}>{col}</th>
-          ))}
+          <th>Field</th>
+          <th>Value</th>
         </tr>
       </thead>
       <tbody>
-        {data.map((item, index) => (
-          <tr key={index}>
-            {columns.map((col) => (
-              <td key={col}>{item[col]}</td>
-            ))}
+        {Object.keys(data).map((key) => (
+          <tr key={key}>
+            <td>{key}</td>
+            <td>{data[key]}</td>
           </tr>
         ))}
       </tbody>
