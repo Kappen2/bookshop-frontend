@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+// UserContext.tsx
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface User {
   id: number;
