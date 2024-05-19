@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useUser } from "../pages/UserContext";
 
-const LoginForm: React.FC = () => {
+interface LoginFormProps {
+  onSuccess: (userId: number) => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setUser } = useUser();
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       const response = await axios.post("/users/login", { username, password });
       if (response.status === 200) {
+        const user = response.data;
+        setUser(user);
+        onSuccess(user.id); // Call the onSuccess callback with the user ID
         alert("Login successful!");
-        // Handle successful login (e.g., store user info, redirect, etc.)
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
