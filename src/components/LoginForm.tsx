@@ -14,11 +14,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await axios.post("/users/login", { username, password });
+      const response = await axios.post("http://localhost:8080/users/login", {
+        username,
+        password,
+      });
       if (response.status === 200) {
         const user = response.data;
         setUser(user);
-        onSuccess(user.id); // Call the onSuccess callback with the user ID
+        console.log(
+          "Login successful, calling onSuccess with user id:",
+          user.id
+        );
+        onSuccess(user.id);
         alert("Login successful!");
       }
     } catch (error) {

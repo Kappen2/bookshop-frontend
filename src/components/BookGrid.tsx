@@ -51,21 +51,37 @@ const BookGrid: React.FC = () => {
   };
 
   const handleLoginSuccess = (userId: number) => {
+    console.log(
+      "Login successful, creating book order with bookId and userId:",
+      selectedBookId,
+      userId
+    );
     if (selectedBookId !== null) {
       createBookOrder(selectedBookId, userId);
     }
-    setShowLoginForm(false); // Hide login form after successful login
+    setShowLoginForm(false);
   };
 
   const createBookOrder = async (bookId: number, userId: number) => {
     try {
-      const response = await axios.post("/orders", { bookId, userId });
-      if (response.status === 200) {
+      const response = await axios.post(
+        "http://localhost:8080/book-orders/add",
+        { bookId, shoppingCartId: userId }
+      );
+      if (response.status === 201) {
         alert("Order created successfully!");
-        // Handle successful order creation (e.g., show confirmation, update UI, etc.)
+      } else {
+        alert(`Failed to create order: ${response.statusText}`);
       }
     } catch (error) {
-      console.error("Error creating order:", error);
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Error creating order:",
+          error.response?.data || error.message
+        );
+      } else {
+        console.error("Unexpected error creating order:", error);
+      }
     }
   };
 
