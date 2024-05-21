@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import LoginForm from "../components/LoginForm";
 import DataTable from "../components/DataTable";
+import Button from "../components/Button"; // Import the Button component
 import { useUser } from "./UserContext";
 import axios from "axios";
 
@@ -36,6 +37,24 @@ const ShoppingCartPage: React.FC = () => {
     }
   }, [user]);
 
+  const handleCheckout = async () => {
+    try {
+      if (user) {
+        // Check if user is not null
+        const response = await axios.delete(
+          `http://localhost:8080/shopping-carts/checkout/${user.id}`
+        );
+        alert(response.data);
+        // Optionally, you can update the shopping cart state or perform any other action after successful checkout
+      } else {
+        // Handle the case when user is null
+        console.error("User is null. Unable to checkout shopping cart.");
+      }
+    } catch (error) {
+      console.error("Error checking out shopping cart:", error);
+    }
+  };
+
   return (
     <div>
       <NavBar />
@@ -44,6 +63,9 @@ const ShoppingCartPage: React.FC = () => {
           <h2>Your Shopping Cart</h2>
           <p>Price: {shoppingCart.price}</p>
           <DataTable data={shoppingCart.bookOrders} />
+          {user && (
+            <Button onClick={handleCheckout}>Checkout</Button> // Render the button only if the user is logged in
+          )}
         </div>
       ) : (
         <LoginForm onSuccess={handleLoginSuccess} />
